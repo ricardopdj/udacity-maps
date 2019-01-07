@@ -71,6 +71,9 @@ class Map extends Component {
             this.props.places.length > 0 &&
             this.props.places.map(place => {
                 const marker = new window.google.maps.Marker({position: place, map: this.state.map});
+                marker.addListener('click', function() {
+                    console.log('click');
+                });
                 this.state.bounds.extend(marker.position);
             })
         }
