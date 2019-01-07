@@ -5,6 +5,11 @@ const google = window.google;
 
 class Map extends Component {
 
+    state = {
+        map: null,
+        bounds: null
+    }
+
     getGoogleMaps() {
         // If we haven't already defined the promise, define it
         if (!this.googleMapsPromise) {
@@ -19,13 +24,11 @@ class Map extends Component {
                 };
 
                 // Load the Google Maps API
-                const script = document.createElement("script");
                 const API = 'AIzaSyC0FRwnvyqQbxEaU8JOuCojITxhb3bxdCQ';
+                const script = document.createElement("script");
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${API}&callback=resolveGoogleMapsPromise`;
                 script.async = true;
-                document
-                    .body
-                    .appendChild(script);
+                document.body.appendChild(script);
             });
         }
 
@@ -39,21 +42,40 @@ class Map extends Component {
     }
 
     componentDidMount() {
+        const { map } = this.state
+        const { places } = this.props
+
         // Once the Google Maps API has finished loading, initialize the map
-        this
-            .getGoogleMaps()
-            .then((google) => {
-                const uluru = {
-                    lat: -30.0331,
-                    lng: -51.2300
-                };
-                const map = new window.google.maps.Map(document.getElementById('map'), {
-                        zoom: 15,
-                        center: uluru
-                    });
-                const marker = new window.google.maps.Marker({position: uluru, map: map});
-            });
+        this.getGoogleMaps().then((google) => {
+            this.createMap();
+            this.setState({bounds: new window.google.maps.LatLngBounds()})
+            this.createMarkers()
+            this.state.map.fitBounds(this.state.bounds);
+        });
     }
+
+    createMap() {
+        this.setState({
+            map: new window.google.maps.Map(
+                document.getElementById('map'),
+                {
+                    zoom: 15,
+                    center: { lat: -30.0331, lng: -51.2300 }
+                }
+            )
+        });
+    }
+
+    createMarkers() {
+        {
+            this.props.places.length > 0 &&
+            this.props.places.map(place => {
+                const marker = new window.google.maps.Marker({position: place, map: this.state.map});
+                this.state.bounds.extend(marker.position);
+            })
+        }
+    }
+
 
     render() {
         return <div id="map" className="h-100"></div>
