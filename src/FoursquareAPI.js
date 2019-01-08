@@ -6,8 +6,6 @@ const ll = '-30.0346471, -51.2176584';
 const section = 'sights';
 
 const fetchUrl = `${api}client_id=${clientId}&client_secret=${clientSecret}&v=20180323&limit=${limit}&ll=${ll}&section=${section}`;
-console.log(fetchUrl);
-
 
 export const getAll = () =>
   fetch(fetchUrl)

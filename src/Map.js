@@ -1,17 +1,22 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Marker from './Marker'
+import escapeRegExp from 'escape-string-regexp'
 
 const google = window.google;
 
 class Map extends Component {
+    constructor(props) {
+        super(props);
+        this.markers = [];
+    }
 
     state = {
         map: null,
         mapLoaded: false,
         bounds: null,
         infoWindow: null,
-        query: ''
+        visibleMarkers: []
     }
 
     getGoogleMaps() {
@@ -50,18 +55,21 @@ class Map extends Component {
         this.getGoogleMaps().then((google) => {
             this.createMap();
             this.setState({bounds: new window.google.maps.LatLngBounds()})
+            console.log(this.props.venues);
+
         });
     }
 
     createMap() {
+        const map = new window.google.maps.Map(
+            document.getElementById('map'),
+            {
+                zoom: 15,
+                center: { lat: -30.0331, lng: -51.2300 }
+            }
+        );
         this.setState({
-            map: new window.google.maps.Map(
-                document.getElementById('map'),
-                {
-                    zoom: 15,
-                    center: { lat: -30.0331, lng: -51.2300 }
-                }
-            ),
+            map: map,
             infoWindow: new window.google.maps.InfoWindow(),
             mapLoaded: true
         });
@@ -73,40 +81,38 @@ class Map extends Component {
     }
 
     openInfoWindow = (marker, venue) => {
-        console.log(venue);
-
         this.state.infoWindow.setContent(`<h4>${venue.name}</h4><p>${venue.location.address}</p>`);
         this.state.infoWindow.open(this.state.map, marker);
         this.state.map.panTo(marker.getPosition());
     }
 
+    createMarker = (venue) => {
+        const marker = new window.google.maps.Marker({position: venue.location, map: this.state.map});
+        marker.name = venue.name
+        this.markers.push(marker);
+
+        // marker.addListener('click', () => this.openInfoWindow(marker, venue));
+    }
+
+    clearMarkers() {
+        this.markers.map(marker => {
+            marker.setMap(null);
+        })
+    }
+
     render() {
-        const {venues} = this.props
-        const {query} = this.state
-        console.log(venues);
+        const { query, venues} = this.props
 
-
-        let showingMarkers
         if (query) {
-            // const match = new RegExp(escapeRegExp(query), 'i')
-            // showingContacts = contacts.filter((contact) => match.test(contact.name))
-            showingMarkers = null;
-        } else {
-            showingMarkers = venues
+            this.clearMarkers();
         }
 
         return (
         <div id="map" className="h-100">
         {
-            this.state.mapLoaded && this.props.venues.length > 0 &&
-            showingMarkers.map((venue, index) => (
-                <Marker
-                    key={index}
-                    venue={venue}
-                    map={this.state.map}
-                    onCreate={this.fitBounds}
-                    onClickMarker={this.openInfoWindow}
-                />
+            this.state.mapLoaded && venues.length > 0 &&
+            venues.map((venue, index) => (
+                this.createMarker(venue)
             ))
         }
         </div>

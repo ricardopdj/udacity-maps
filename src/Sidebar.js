@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import { Debounce } from 'react-throttle';
+import escapeRegExp from 'escape-string-regexp'
 import {
         InputGroup,
         InputGroupAddon,
@@ -11,20 +13,27 @@ import {
 
 class Sidebar extends Component {
 
+    updateQuery = (query) => {
+        this.props.onSearch(query);
+    }
     render() {
-        const { venues } = this.props
+        const { venues} = this.props
 
         return (
             <aside className="py-2">
                 <h1>Porto Alegre Sights</h1>
                 <InputGroup className="my-4">
-                    <Input placeholder="Filtrar" />
-                    <InputGroupAddon addonType="append">
-                    <Button color="secondary">To the Right!</Button>
-                    </InputGroupAddon>
+                    <Debounce time="400" handler="onChange">
+                        <Input placeholder="Filtrar" onChange={(event) => this.updateQuery(event.target.value)}/>
+                    </Debounce>
                 </InputGroup>
                 <ListGroup>
-                    { venues.length > 0 && venues.map((venue, index) => <ListGroupItem key={index}>{venue.name}</ListGroupItem>) }
+                    {
+                        venues.length > 0 &&
+                        venues.map((venue, index) =>
+                            <ListGroupItem key={index}>{venue.name}</ListGroupItem>
+                        )
+                    }
                 </ListGroup>
             </aside>
         )

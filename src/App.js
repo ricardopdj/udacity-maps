@@ -6,33 +6,48 @@ import PropTypes from 'prop-types'
 import Map from './Map'
 import Sidebar from './Sidebar'
 import * as FoursquareAPI from './FoursquareAPI'
+import escapeRegExp from 'escape-string-regexp'
 
 class App extends Component {
 
     state = {
-        venues: []
+        venues: [],
+        visibleVenues: [],
+        visibleMarkers: [],
+        query: ''
     }
 
     componentDidMount() {
         FoursquareAPI
             .getAll()
             .then((venues) => {
-                this.setState({venues});
+                this.setState({
+                    venues: venues,
+                    visibleVenues: venues
+                });
             })
     }
 
+    updateQuery = (query) => {
+        this.setState({query});
+        const match = new RegExp(escapeRegExp(query), 'i');
+        this.setState({visibleVenues: this.state.venues.filter(venue => match.test(venue.name))})
+    }
 
     render() {
         return (
             <Container fluid={true} className="h-100">
+                { this.state.venues &&
                 <Row className="h-100">
                     <Col xs="12" md="4">
-                        <Sidebar venues={this.state.venues}/>
+                        <Sidebar venues={this.state.visibleVenues} onSearch={this.updateQuery}/>
                     </Col>
                     <Col xs="12" md="8">
-                        <Map venues={this.state.venues}/>
+                        <Map venues={this.state.visibleVenues} query={this.state.query}/>
                     </Col>
                 </Row>
+                }
+
             </Container>
         );
     }
