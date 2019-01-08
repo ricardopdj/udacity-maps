@@ -10,6 +10,7 @@ class Map extends Component {
         map: null,
         mapLoaded: false,
         bounds: null,
+        infoWindow: null,
         query: ''
     }
 
@@ -45,15 +46,10 @@ class Map extends Component {
     }
 
     componentDidMount() {
-        const { map } = this.state
-        const { venues } = this.props
-
         // Once the Google Maps API has finished loading, initialize the map
         this.getGoogleMaps().then((google) => {
             this.createMap();
             this.setState({bounds: new window.google.maps.LatLngBounds()})
-            // this.createMarkers()
-            // this.state.map.fitBounds(this.state.bounds);
         });
     }
 
@@ -66,6 +62,7 @@ class Map extends Component {
                     center: { lat: -30.0331, lng: -51.2300 }
                 }
             ),
+            infoWindow: new window.google.maps.InfoWindow(),
             mapLoaded: true
         });
     }
@@ -75,11 +72,19 @@ class Map extends Component {
         this.state.map.fitBounds(this.state.bounds);
     }
 
+    openInfoWindow = (marker, venue) => {
+        console.log(venue);
 
+        this.state.infoWindow.setContent(`<h4>${venue.name}</h4><p>${venue.location.address}</p>`);
+        this.state.infoWindow.open(this.state.map, marker);
+        this.state.map.panTo(marker.getPosition());
+    }
 
     render() {
         const {venues} = this.props
         const {query} = this.state
+        console.log(venues);
+
 
         let showingMarkers
         if (query) {
@@ -96,10 +101,11 @@ class Map extends Component {
             this.state.mapLoaded && this.props.venues.length > 0 &&
             showingMarkers.map((venue, index) => (
                 <Marker
-                    key={venue.id}
-                    location={venue.location}
+                    key={index}
+                    venue={venue}
                     map={this.state.map}
                     onCreate={this.fitBounds}
+                    onClickMarker={this.openInfoWindow}
                 />
             ))
         }
