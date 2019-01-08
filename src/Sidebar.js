@@ -16,7 +16,8 @@ class Sidebar extends Component {
 
         return (
             <aside className="py-2">
-                <InputGroup>
+                <h1>Porto Alegre Sights</h1>
+                <InputGroup className="my-4">
                     <Input placeholder="Filtrar" />
                     <InputGroupAddon addonType="append">
                     <Button color="secondary">To the Right!</Button>

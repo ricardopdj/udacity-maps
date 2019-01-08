@@ -51,7 +51,7 @@ class Map extends Component {
         // Once the Google Maps API has finished loading, initialize the map
         this.getGoogleMaps().then((google) => {
             this.createMap();
-            // this.setState({bounds: new window.google.maps.LatLngBounds()})
+            this.setState({bounds: new window.google.maps.LatLngBounds()})
             // this.createMarkers()
             // this.state.map.fitBounds(this.state.bounds);
         });
@@ -70,6 +70,10 @@ class Map extends Component {
         });
     }
 
+    fitBounds = (position) => {
+        this.state.bounds.extend(position);
+        this.state.map.fitBounds(this.state.bounds);
+    }
 
 
 
@@ -95,6 +99,7 @@ class Map extends Component {
                     key={venue.id}
                     location={venue.location}
                     map={this.state.map}
+                    onCreate={this.fitBounds}
                 />
             ))
         }

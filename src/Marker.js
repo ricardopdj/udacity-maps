@@ -15,7 +15,7 @@ class Marker extends Component {
         marker.addListener('click', function() {
             console.log('click');
         });
-        // this.state.bounds.extend(marker.position);
+        this.props.onCreate(marker.position);
     }
 
     render() {
