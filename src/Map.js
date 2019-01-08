@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import Marker from './Marker'
 
 const google = window.google;
 
@@ -7,7 +8,9 @@ class Map extends Component {
 
     state = {
         map: null,
-        bounds: null
+        mapLoaded: false,
+        bounds: null,
+        query: ''
     }
 
     getGoogleMaps() {
@@ -43,14 +46,14 @@ class Map extends Component {
 
     componentDidMount() {
         const { map } = this.state
-        const { places } = this.props
+        const { venues } = this.props
 
         // Once the Google Maps API has finished loading, initialize the map
         this.getGoogleMaps().then((google) => {
             this.createMap();
-            this.setState({bounds: new window.google.maps.LatLngBounds()})
-            this.createMarkers()
-            this.state.map.fitBounds(this.state.bounds);
+            // this.setState({bounds: new window.google.maps.LatLngBounds()})
+            // this.createMarkers()
+            // this.state.map.fitBounds(this.state.bounds);
         });
     }
 
@@ -62,26 +65,41 @@ class Map extends Component {
                     zoom: 15,
                     center: { lat: -30.0331, lng: -51.2300 }
                 }
-            )
+            ),
+            mapLoaded: true
         });
     }
 
-    createMarkers() {
-        {
-            this.props.places.length > 0 &&
-            this.props.places.map(place => {
-                const marker = new window.google.maps.Marker({position: place, map: this.state.map});
-                marker.addListener('click', function() {
-                    console.log('click');
-                });
-                this.state.bounds.extend(marker.position);
-            })
-        }
-    }
+
 
 
     render() {
-        return <div id="map" className="h-100"></div>
+        const {venues} = this.props
+        const {query} = this.state
+
+        let showingMarkers
+        if (query) {
+            // const match = new RegExp(escapeRegExp(query), 'i')
+            // showingContacts = contacts.filter((contact) => match.test(contact.name))
+            showingMarkers = null;
+        } else {
+            showingMarkers = venues
+        }
+
+        return (
+        <div id="map" className="h-100">
+        {
+            this.state.mapLoaded && this.props.venues.length > 0 &&
+            showingMarkers.map((venue, index) => (
+                <Marker
+                    key={venue.id}
+                    location={venue.location}
+                    map={this.state.map}
+                />
+            ))
+        }
+        </div>
+        )
     }
 }
 

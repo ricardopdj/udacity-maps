@@ -12,7 +12,7 @@ import {
 class Sidebar extends Component {
 
     render() {
-        const { places } = this.props
+        const { venues } = this.props
 
         return (
             <aside className="py-2">
@@ -23,7 +23,7 @@ class Sidebar extends Component {
                     </InputGroupAddon>
                 </InputGroup>
                 <ListGroup>
-                    { places.length > 0 && places.map((place, index) => <ListGroupItem key={index}>{place.name}</ListGroupItem>) }
+                    { venues.length > 0 && venues.map((venue, index) => <ListGroupItem key={index}>{venue.name}</ListGroupItem>) }
                 </ListGroup>
             </aside>
         )
