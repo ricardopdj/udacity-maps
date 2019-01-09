@@ -6,17 +6,8 @@ import escapeRegExp from 'escape-string-regexp'
 const google = window.google;
 
 class Map extends Component {
-    constructor(props) {
-        super(props);
-        this.markers = [];
-    }
-
     state = {
-        map: null,
         mapLoaded: false,
-        bounds: null,
-        infoWindow: null,
-        visibleMarkers: []
     }
 
     getGoogleMaps() {
@@ -54,9 +45,6 @@ class Map extends Component {
         // Once the Google Maps API has finished loading, initialize the map
         this.getGoogleMaps().then((google) => {
             this.createMap();
-            this.setState({bounds: new window.google.maps.LatLngBounds()})
-            console.log(this.props.venues);
-
         });
     }
 
@@ -68,53 +56,12 @@ class Map extends Component {
                 center: { lat: -30.0331, lng: -51.2300 }
             }
         );
-        this.setState({
-            map: map,
-            infoWindow: new window.google.maps.InfoWindow(),
-            mapLoaded: true
-        });
-    }
-
-    fitBounds = (position) => {
-        this.state.bounds.extend(position);
-        this.state.map.fitBounds(this.state.bounds);
-    }
-
-    openInfoWindow = (marker, venue) => {
-        this.state.infoWindow.setContent(`<h4>${venue.name}</h4><p>${venue.location.address}</p>`);
-        this.state.infoWindow.open(this.state.map, marker);
-        this.state.map.panTo(marker.getPosition());
-    }
-
-    createMarker = (venue) => {
-        const marker = new window.google.maps.Marker({position: venue.location, map: this.state.map});
-        marker.name = venue.name
-        this.markers.push(marker);
-
-        // marker.addListener('click', () => this.openInfoWindow(marker, venue));
-    }
-
-    clearMarkers() {
-        this.markers.map(marker => {
-            marker.setMap(null);
-        })
+        this.props.onCreate(map)
     }
 
     render() {
-        const { query, venues} = this.props
-
-        if (query) {
-            this.clearMarkers();
-        }
-
         return (
         <div id="map" className="h-100">
-        {
-            this.state.mapLoaded && venues.length > 0 &&
-            venues.map((venue, index) => (
-                this.createMarker(venue)
-            ))
-        }
         </div>
         )
     }

@@ -16,6 +16,11 @@ class Sidebar extends Component {
     updateQuery = (query) => {
         this.props.onSearch(query);
     }
+
+    openInfo = (venue) => {
+        this.props.onOpenInfo(venue);
+    }
+
     render() {
         const { venues} = this.props
 
@@ -31,7 +36,7 @@ class Sidebar extends Component {
                     {
                         venues.length > 0 &&
                         venues.map((venue, index) =>
-                            <ListGroupItem key={index}>{venue.name}</ListGroupItem>
+                            <ListGroupItem tag="button" key={index} onClick={() => this.openInfo(venue)}>{venue.name}</ListGroupItem>
                         )
                     }
                 </ListGroup>
