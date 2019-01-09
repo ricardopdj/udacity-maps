@@ -27,7 +27,17 @@ class App extends Component {
                     venues: venues,
                     visibleVenues: venues
                 });
-                console.log("venues loaded");
+                console.log("venues loaded", venues);
+            })
+    }
+
+    getPhoto = (venueId) => {
+        FoursquareAPI
+            .getPhoto(venueId)
+            .then((photo) => {
+                console.log(photo);
+
+                return photo
             })
     }
 
@@ -56,9 +66,7 @@ class App extends Component {
     updateQuery = (query) => {
         const match = new RegExp(escapeRegExp(query), 'i');
         this.setState({visibleVenues: this.state.venues.filter(venue => match.test(venue.name))})
-        if (this.state.infoWindow) {
-            this.state.infoWindow.close();
-        }
+        { this.state.infoWindow && this.state.infoWindow.close() }
 
         this.state.markers.map(marker => {
             marker.setVisible(match.test(marker.name));
@@ -66,10 +74,19 @@ class App extends Component {
     }
 
     openInfo = (venue) => {
+        if (!venue.img) {
+            let x = this.getPhoto(venue.id);
+            console.log(x);
+
+            // venue.img = 'teste';
+        }
+
+
         this.state.infoWindow.setContent(`<h4>${venue.name}</h4><p>${venue.location.address}</p>`);
         const marker = this.state.markers.find(marker => marker.id == venue.id)
         this.state.infoWindow.open(this.state.map, marker);
         this.state.map.panTo(marker.getPosition());
+        marker.setAnimation(window.google.maps.Animation.DROP);
     }
 
     fitBounds = (position) => {
@@ -82,11 +99,21 @@ class App extends Component {
             <Container fluid={true} className="h-100">
                 { this.state.venues.length > 0 &&
                 <Row className="h-100">
-                    <Col xs="12" md="4">
+                    <Col xs="12" lg="4">
                         <Sidebar venues={this.state.visibleVenues} onSearch={this.updateQuery} onOpenInfo={this.openInfo}/>
                     </Col>
-                    <Col xs="12" md="8">
+                    <Col xs="12" lg="8">
                         <Map onCreate={this.setMap} venues={this.state.visibleVenues} query={this.state.query}/>
+                    </Col>
+                </Row>
+                }
+
+                { this.state.venues.length > 0 &&
+                <Row>
+                    <Col>
+                        <div className="text-center py-3">
+                            Made with <a href="https://developer.foursquare.com">Foursquare API</a> and <a href="https://cloud.google.com/maps-platform">Google Maps API</a>
+                        </div>
                     </Col>
                 </Row>
                 }
