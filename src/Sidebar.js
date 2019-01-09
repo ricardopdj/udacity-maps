@@ -17,8 +17,8 @@ class Sidebar extends Component {
         this.props.onSearch(query);
     }
 
-    openInfo = (venue) => {
-        this.props.onOpenInfo(venue);
+    getInfo = (venue) => {
+        this.props.onGetInfo(venue);
     }
 
     render() {
@@ -36,7 +36,7 @@ class Sidebar extends Component {
                     {
                         venues.length > 0 &&
                         venues.map((venue, index) =>
-                            <ListGroupItem tag="button" key={index} onClick={() => this.openInfo(venue)}>{venue.name}</ListGroupItem>
+                            <ListGroupItem tag="button" key={index} onClick={() => this.getInfo(venue)}>{venue.name}</ListGroupItem>
                         )
                     }
                 </ListGroup>

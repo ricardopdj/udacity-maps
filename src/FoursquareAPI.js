@@ -19,6 +19,6 @@ export const getPhoto = (venueId) => fetch(`https://api.foursquare.com/v2/venues
     .then(res => res.json())
     .then(data => data.response.photos.items[0])
     .then(res => {
-        return `${res.prefix}/height100/${res.suffix}`
+        return `${res.prefix}cap200${res.suffix}`
     })
     .catch(err => console.log("Erro ao consultar a api do Foursquare", err));

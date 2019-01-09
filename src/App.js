@@ -31,16 +31,6 @@ class App extends Component {
             })
     }
 
-    getPhoto = (venueId) => {
-        FoursquareAPI
-            .getPhoto(venueId)
-            .then((photo) => {
-                console.log(photo);
-
-                return photo
-            })
-    }
-
     setMap = (map) => {
         console.log("map created");
         this.setState({
@@ -57,7 +47,7 @@ class App extends Component {
             const marker = new window.google.maps.Marker({position: venue.location, map: map});
             marker.id = venue.id
             marker.name = venue.name
-            marker.addListener('click', () => this.openInfo(venue));
+            marker.addListener('click', () => this.getInfo(venue));
             this.fitBounds(marker.position);
             return marker;
         })
@@ -73,21 +63,31 @@ class App extends Component {
         })
     }
 
-    openInfo = (venue) => {
-        if (!venue.img) {
-            let x = this.getPhoto(venue.id);
-            console.log(x);
-
-            // venue.img = 'teste';
+    getInfo = (venue) => {
+        if (!venue.photo) {
+            FoursquareAPI
+            .getPhoto(venue.id)
+                .then((photo) => {
+                    venue.photo = photo
+                    return venue
+                })
+                .then((venue) => this.openInfo(venue))
+                .catch(err => console.log("Erro ao consultar a api do Foursquare", err));
+        } else {
+            this.openInfo(venue)
         }
+    }
 
-
-        this.state.infoWindow.setContent(`<h4>${venue.name}</h4><p>${venue.location.address}</p>`);
+    openInfo = (venue) => {
+        const infoContent = `<h4>${venue.name}</h4><p>${venue.location.address}</p><img src="${venue.photo}"/>`;
+        this.state.infoWindow.setContent(infoContent);
         const marker = this.state.markers.find(marker => marker.id == venue.id)
         this.state.infoWindow.open(this.state.map, marker);
         this.state.map.panTo(marker.getPosition());
         marker.setAnimation(window.google.maps.Animation.DROP);
     }
+
+
 
     fitBounds = (position) => {
         this.state.bounds.extend(position);
@@ -100,7 +100,7 @@ class App extends Component {
                 { this.state.venues.length > 0 &&
                 <Row className="h-100">
                     <Col xs="12" lg="4">
-                        <Sidebar venues={this.state.visibleVenues} onSearch={this.updateQuery} onOpenInfo={this.openInfo}/>
+                        <Sidebar venues={this.state.visibleVenues} onSearch={this.updateQuery} onGetInfo={this.getInfo}/>
                     </Col>
                     <Col xs="12" lg="8">
                         <Map onCreate={this.setMap} venues={this.state.visibleVenues} query={this.state.query}/>

@@ -61,7 +61,7 @@ class Map extends Component {
 
     render() {
         return (
-        <div id="map" className="h-100">
+        <div id="map" className="h-100 mh-">
         </div>
         )
     }
