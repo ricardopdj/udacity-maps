@@ -31,7 +31,7 @@ class Sidebar extends Component {
                 <h1>Porto Alegre Sights</h1>
                 <InputGroup className="my-4">
                     <Debounce time="400" handler="onChange">
-                        <Input placeholder="Filtrar" onChange={(event) => this.updateQuery(event.target.value)}/>
+                        <Input placeholder="Filter locations" aria-label="Type a venue name to filter" onChange={(event) => this.updateQuery(event.target.value)}/>
                     </Debounce>
                 </InputGroup>
                 <ListGroup>

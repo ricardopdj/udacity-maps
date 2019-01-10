@@ -64,7 +64,7 @@ class Map extends Component {
 
     render() {
         return (
-        <div id="map" className="h-100 mh-">
+        <div id="map" className="h-100" role="application" aria-label="Neighborhood Map">
         </div>
         )
     }
