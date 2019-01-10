@@ -1,15 +1,15 @@
 {
-  "main.css": "/static/css/main.a6a645cd.chunk.css",
-  "main.js": "/static/js/main.b17f241f.chunk.js",
-  "main.js.map": "/static/js/main.b17f241f.chunk.js.map",
-  "static/css/1.274b2170.chunk.css": "/static/css/1.274b2170.chunk.css",
-  "static/js/1.87edd19c.chunk.js": "/static/js/1.87edd19c.chunk.js",
-  "static/js/1.87edd19c.chunk.js.map": "/static/js/1.87edd19c.chunk.js.map",
-  "runtime~main.js": "/static/js/runtime~main.229c360f.js",
-  "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
-  "static/css/1.274b2170.chunk.css.map": "/static/css/1.274b2170.chunk.css.map",
-  "static/css/main.a6a645cd.chunk.css.map": "/static/css/main.a6a645cd.chunk.css.map",
-  "index.html": "/index.html",
-  "precache-manifest.b3b5944ad81acf0b0c756d8fab73d511.js": "/precache-manifest.b3b5944ad81acf0b0c756d8fab73d511.js",
-  "service-worker.js": "/service-worker.js"
+  "main.css": "/udacity-maps/static/css/main.a6a645cd.chunk.css",
+  "main.js": "/udacity-maps/static/js/main.cd0b0e1a.chunk.js",
+  "main.js.map": "/udacity-maps/static/js/main.cd0b0e1a.chunk.js.map",
+  "static/css/1.274b2170.chunk.css": "/udacity-maps/static/css/1.274b2170.chunk.css",
+  "static/js/1.87edd19c.chunk.js": "/udacity-maps/static/js/1.87edd19c.chunk.js",
+  "static/js/1.87edd19c.chunk.js.map": "/udacity-maps/static/js/1.87edd19c.chunk.js.map",
+  "runtime~main.js": "/udacity-maps/static/js/runtime~main.e988c55c.js",
+  "runtime~main.js.map": "/udacity-maps/static/js/runtime~main.e988c55c.js.map",
+  "static/css/1.274b2170.chunk.css.map": "/udacity-maps/static/css/1.274b2170.chunk.css.map",
+  "static/css/main.a6a645cd.chunk.css.map": "/udacity-maps/static/css/main.a6a645cd.chunk.css.map",
+  "index.html": "/udacity-maps/index.html",
+  "precache-manifest.6c21c87e34248ecd17f7e80ecfb6bd99.js": "/udacity-maps/precache-manifest.6c21c87e34248ecd17f7e80ecfb6bd99.js",
+  "service-worker.js": "/udacity-maps/service-worker.js"
 }
