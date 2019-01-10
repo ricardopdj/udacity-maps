@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
 import {Container, Row, Col} from 'reactstrap';
-import PropTypes from 'prop-types'
 import Map from './Map'
 import Sidebar from './Sidebar'
 import * as FoursquareAPI from './FoursquareAPI'
@@ -119,7 +118,7 @@ class App extends Component {
                 </Row>
                 }
 
-                { !this.state.venues && !this.state.apiError &&
+                { !this.state.venues.length && !this.state.apiError &&
                     <Row className="h-100 align-items-center">
                         <Col xs="12">
                             <div className="text-center py-3">
