@@ -9,6 +9,11 @@ import {
     } from 'reactstrap';
 
 class Sidebar extends Component {
+    static propTypes = {
+        venues: PropTypes.array.isRequired,
+        onSearch: PropTypes.func.isRequired,
+        onGetInfo: PropTypes.func.isRequired
+    }
 
     updateQuery = (query) => {
         this.props.onSearch(query);

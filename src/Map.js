@@ -4,6 +4,11 @@ import PropTypes from 'prop-types'
 const google = window.google;
 
 class Map extends Component {
+    static propTypes = {
+        venues: PropTypes.array.isRequired,
+        onCreate: PropTypes.func.isRequired
+    }
+
     state = {
         mapLoaded: false,
     }

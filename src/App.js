@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import {Container, Row, Col } from 'reactstrap';
+import {Container, Row, Col} from 'reactstrap';
 import PropTypes from 'prop-types'
 import Map from './Map'
 import Sidebar from './Sidebar'
@@ -27,13 +27,11 @@ class App extends Component {
                     venues: venues,
                     visibleVenues: venues
                 });
-                console.log("venues loaded", venues);
             })
             .catch(() => { this.setState({apiError: true }) });
     }
 
     setMap = (map) => {
-        console.log("map created");
         this.setState({
             map: map,
             infoWindow: new window.google.maps.InfoWindow(),
@@ -79,10 +77,11 @@ class App extends Component {
         }
     }
 
+    // Create and open InfoWindow of the selected venue/marker
     openInfo = (venue) => {
         let infoContent = `<h4>${venue.name}</h4><p>${venue.location.address}</p>`
         if (venue.photo) {
-            infoContent = `${infoContent}<img src="${venue.photo}"/>`
+            infoContent = `${infoContent}<img src="${venue.photo}" alt="${venue.name}"/>`
         }
         this.state.infoWindow.setContent(infoContent);
         const marker = this.state.markers.find(marker => marker.id === venue.id)
@@ -105,7 +104,7 @@ class App extends Component {
                         <Sidebar venues={this.state.visibleVenues} onSearch={this.updateQuery} onGetInfo={this.getInfo}/>
                     </Col>
                     <Col xs="12" lg="8">
-                        <Map onCreate={this.setMap} venues={this.state.visibleVenues} query={this.state.query}/>
+                        <Map onCreate={this.setMap} venues={this.state.visibleVenues}/>
                     </Col>
                 </Row>
                 }
