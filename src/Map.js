@@ -1,7 +1,5 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import Marker from './Marker'
-import escapeRegExp from 'escape-string-regexp'
 
 const google = window.google;
 

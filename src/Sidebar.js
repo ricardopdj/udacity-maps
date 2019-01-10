@@ -1,11 +1,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import { Debounce } from 'react-throttle';
-import escapeRegExp from 'escape-string-regexp'
 import {
         InputGroup,
-        InputGroupAddon,
-        Button,
         Input,
         ListGroup,
         ListGroupItem

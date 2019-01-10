@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
 import './App.css';
-import {Container, Row, Col, InputGroup, InputGroupAddon, Button, Input } from 'reactstrap';
+import {Container, Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types'
 import Map from './Map'
 import Sidebar from './Sidebar'
@@ -11,6 +10,7 @@ import escapeRegExp from 'escape-string-regexp'
 class App extends Component {
 
     state = {
+        apiError: false,
         venues: [],
         visibleVenues: [],
         map: null,
@@ -29,6 +29,7 @@ class App extends Component {
                 });
                 console.log("venues loaded", venues);
             })
+            .catch(() => { this.setState({apiError: true }) });
     }
 
     setMap = (map) => {
@@ -59,7 +60,7 @@ class App extends Component {
         { this.state.infoWindow && this.state.infoWindow.close() }
 
         this.state.markers.map(marker => {
-            marker.setVisible(match.test(marker.name));
+            return marker.setVisible(match.test(marker.name));
         })
     }
 
@@ -79,15 +80,16 @@ class App extends Component {
     }
 
     openInfo = (venue) => {
-        const infoContent = `<h4>${venue.name}</h4><p>${venue.location.address}</p><img src="${venue.photo}"/>`;
+        let infoContent = `<h4>${venue.name}</h4><p>${venue.location.address}</p>`
+        if (venue.photo) {
+            infoContent = `${infoContent}<img src="${venue.photo}"/>`
+        }
         this.state.infoWindow.setContent(infoContent);
-        const marker = this.state.markers.find(marker => marker.id == venue.id)
+        const marker = this.state.markers.find(marker => marker.id === venue.id)
         this.state.infoWindow.open(this.state.map, marker);
         this.state.map.panTo(marker.getPosition());
         marker.setAnimation(window.google.maps.Animation.DROP);
     }
-
-
 
     fitBounds = (position) => {
         this.state.bounds.extend(position);
@@ -110,12 +112,32 @@ class App extends Component {
 
                 { this.state.venues.length > 0 &&
                 <Row>
-                    <Col>
+                    <Col xs="12">
                         <div className="text-center py-3">
                             Made with <a href="https://developer.foursquare.com">Foursquare API</a> and <a href="https://cloud.google.com/maps-platform">Google Maps API</a>
                         </div>
                     </Col>
                 </Row>
+                }
+
+                { !this.state.venues && !this.state.apiError &&
+                    <Row className="h-100 align-items-center">
+                        <Col xs="12">
+                            <div className="text-center py-3">
+                                <span className="align-middle">Loading some Porto Alegre sights! Wait...</span>
+                            </div>
+                        </Col>
+                    </Row>
+                }
+
+                { this.state.apiError &&
+                    <Row className="h-100 align-items-center">
+                        <Col xs="12">
+                            <div className="text-center py-3">
+                                <span className="align-middle">Sorry! Something wrong happen, please try later :(</span>
+                            </div>
+                        </Col>
+                    </Row>
                 }
             </Container>
         );

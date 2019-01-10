@@ -12,10 +12,10 @@ export const getAll = () => fetch(fetchUrl)
     .then(res => res.json())
     .then(data => data.response.groups[0].items)
     .then(res => res.map(item => item.venue))
-    .catch(err => console.log("Erro ao consultar a api do Foursquare", err));
+    .catch(err => { throw err });
 
 
-export const getPhoto = (venueId) => fetch(`https://api.foursquare.com/v2/venues/${venueId}/photos${params}`)
+    export const getPhoto = (venueId) => fetch(`https://api.foursquare.com/v2/venues/${venueId}/photos${params}`)
     .then(res => res.json())
     .then(data => data.response.photos.items[0])
     .then(res => {
