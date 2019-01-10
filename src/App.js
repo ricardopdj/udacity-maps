@@ -98,7 +98,7 @@ class App extends Component {
         return (
             <Container fluid={true} className="h-100">
                 { this.state.venues.length > 0 &&
-                <Row className="h-100">
+                <Row>
                     <Col xs="12" lg="4">
                         <Sidebar venues={this.state.visibleVenues} onSearch={this.updateQuery} onGetInfo={this.getInfo}/>
                     </Col>
