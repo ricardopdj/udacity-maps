@@ -28,6 +28,12 @@ Open a terminal at the project root and run `npm install` to install all depende
 ### Development
 Open a terminal at the app's root folder and run `npm start`
 
+## Run Offline
+1. Remove ["homepage": "http://ricardopdj.github.io/udacity-maps"] from the package.json file
+1. Run `npm run build`
+2. Run `serve -s build`. If serve isn't installed enter `npm install -g serve` and repeat step 2.
+3. Navigate to localhost:5000 as listed on your terminal.
+
 ### Demo
 
 [https://ricardopdj.github.io/udacity-maps/](https://ricardopdj.github.io/udacity-maps/)
