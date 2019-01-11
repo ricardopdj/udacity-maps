@@ -31,6 +31,10 @@ class Map extends Component {
                 const script = document.createElement("script");
                 script.src = `https://maps.googleapis.com/maps/api/js?key=${API}&callback=resolveGoogleMapsPromise`;
                 script.async = true;
+                script.defer = true;
+                script.onerror = () => {
+                    this.props.onError();
+                };
                 document.body.appendChild(script);
             });
         }

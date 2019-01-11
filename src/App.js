@@ -10,6 +10,7 @@ class App extends Component {
 
     state = {
         apiError: false,
+        mapsError: false,
         venues: [],
         visibleVenues: [],
         map: null,
@@ -94,6 +95,10 @@ class App extends Component {
         this.state.map.fitBounds(this.state.bounds);
     }
 
+    onMapError = () => {
+        this.setState({mapsError: true})
+    }
+
     render() {
         return (
             <Container fluid={true} className="h-100">
@@ -103,7 +108,9 @@ class App extends Component {
                         <Sidebar venues={this.state.visibleVenues} onSearch={this.updateQuery} onGetInfo={this.getInfo}/>
                     </Col>
                     <Col xs="12" lg="8">
-                        <Map onCreate={this.setMap} venues={this.state.visibleVenues}/>
+                        { !this.state.mapsError &&
+                            <Map onCreate={this.setMap} onError={this.onMapError} venues={this.state.visibleVenues}/>
+                        }
                     </Col>
                 </Row>
                 }
